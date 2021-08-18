@@ -35,9 +35,10 @@ namespace ProjectUserActivity.Controllers
             var installDay = DateTime.Now.Date;
 
             int a = db.Users.Where(user => 
-                user.Registration <= installDay && (user.LastActivity - installDay).Days >= day).Count();
+                (installDay - user.Registration).Days >= day && user.LastActivity >= installDay).Count();
 
-            int b = db.Users.Where(user => (installDay >= user.Registration)).Count();
+            int b = db.Users.Where(user => (installDay - user.Registration).Days >= day).Count();
+
 
             if (b == 0)
             {
