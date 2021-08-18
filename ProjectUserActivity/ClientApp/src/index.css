@@ -36,6 +36,18 @@ body {
     border-radius: 20px;
 }
 
+.error-message {
+    color: red;
+}
+
+.new-user-form {
+    background-color: white;
+    border: solid 1px white;
+    box-shadow: 2px 4px 10px rgba(93, 109, 151, 0.1);
+    padding: 1em;
+    border-radius: 5px;
+}
+
 .search-input {
     width: 320px;
 }
@@ -86,6 +98,7 @@ body {
 #table {
     border-collapse: separate;
     border-spacing: 0 3px;
+    margin-bottom: -1px;
 }
 
 #table .table-row {

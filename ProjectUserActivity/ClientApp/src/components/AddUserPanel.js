@@ -9,11 +9,13 @@ export class AddUserPanel extends React.Component {
         this.state = {
             registration: '',
             lastActivity: '',
+            error: null,
         };
 
         this.handleRegistrationChange = this.handleRegistrationChange.bind(this);
         this.handleLastActivityChange = this.handleLastActivityChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.validate = this.validate.bind(this);
     }
 
     handleRegistrationChange(event) {
@@ -34,8 +36,14 @@ export class AddUserPanel extends React.Component {
         const reg = this.state.registration;
         const lastact = this.state.lastActivity;
 
-        if (new Date(reg).getTime() > new Date(lastact).getTime()) {
-            //return;
+        const error = this.validate(reg, lastact);
+
+        if (error) {
+            this.setState({
+                error: error,
+            });
+
+            return;
         }
 
         this.props.onAddUserSubmit({
@@ -46,47 +54,59 @@ export class AddUserPanel extends React.Component {
         this.setState({
             registration: '',
             lastActivity: '',
+            error: null,
         });
+    }
+
+    validate(registration, lastActivity) {
+        if (!registration || !lastActivity) {
+            return 'Fields cannot be empty';
+        }
+
+        if (new Date(registration).getTime() > new Date(lastActivity).getTime()) {
+            return 'Registration date cannot exceed the last user activity';
+        }
+
+        return null;
     }
 
     render() {
         return (
-            <Container>
-                <h2 className="title">New user</h2>
-
+            <Container className="new-user-form">
                 <Form onSubmit={this.handleSubmit}>
-                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalRegDate">
-                        <Form.Label column sm={3}>
-                            <p className="form-title">Registration date</p>
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalUserInfo">
+                        <Form.Label column>
+                            <p className="form-title">New user</p>
                         </Form.Label>
-                        <Col sm={4}>
+
+                        <Col>
                             <Form.Control
                                 type="date"
-                                placeholder="none"
                                 className="form-input"
                                 value={this.state.registration}
                                 onChange={this.handleRegistrationChange} />
                         </Col>
-                        <Col></Col>
-                    </Form.Group>
 
-                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalLastDate">
-                        <Form.Label column sm={3}>
-                            <p className="form-title">Date last activity</p>
-                        </Form.Label>
-                        <Col sm={4}>
+                        <Col>
                             <Form.Control
                                 type="date"
                                 className="form-input"
                                 value={this.state.lastActivity}
                                 onChange={this.handleLastActivityChange} />
                         </Col>
-                        <Col></Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} className="mb-3 float-end">
-                        <Col>
-                            <Button type="submit" className="usual-button">Save</Button>
+                    <Form.Group as={Row} controlId="formNewUser">
+                        {this.state.error &&
+                            <Col>
+                                <p className="table-text form-title error-message">{this.state.error}</p>
+                            </Col>
+                        }
+
+                        <Col className="text-end">
+                            <Button
+                                type="submit"
+                                className="usual-button">Save</Button>
                         </Col>
                     </Form.Group>
                 </Form>
