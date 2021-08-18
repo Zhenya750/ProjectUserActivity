@@ -32,12 +32,12 @@ namespace ProjectUserActivity.Controllers
                 return BadRequest();
             }
 
-            var installDay = DateTime.Now.Date;
+            var dayX = DateTime.Now.Date;
 
             int a = db.Users.Where(user => 
-                (installDay - user.Registration).Days >= day && user.LastActivity >= installDay).Count();
+                (dayX - user.Registration).Days >= day && user.LastActivity >= dayX).Count();
 
-            int b = db.Users.Where(user => (installDay - user.Registration).Days >= day).Count();
+            int b = db.Users.Where(user => (dayX - user.Registration).Days >= day).Count();
 
 
             if (b == 0)
