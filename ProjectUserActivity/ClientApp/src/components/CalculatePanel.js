@@ -17,11 +17,12 @@ export class CalculatePanel extends React.Component {
     }
 
     getHistogramData(totalDays) {
+
         const data = totalDays.map((days, i) => {
             return ['', days];
         });
 
-        return [['UserID', 'Days']].concat(data);
+        return [['', 'Days']].concat(data);
     }
 
     loadRollingRetention(day) {

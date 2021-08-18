@@ -8,7 +8,7 @@ export class RollingRetention extends React.Component {
                 <Row>
                     <Col>
                         <p>Rolling Retention 7 day: </p>
-                        <h1>{this.props.value}%</h1>
+                        <h1 className="text-center">{this.props.value}%</h1>
                     </Col>
                 </Row>
             </Container>

@@ -25,23 +25,27 @@ namespace ProjectUserActivity.Controllers
 
         [HttpGet]
         [Route("rollingretention/{day}")]
-        public double GetRollingRetention(int day)
+        public IActionResult GetRollingRetention(int day)
         {
             if (day < 0)
             {
-                return -1;
+                return BadRequest();
             }
 
-            int a = db.Users.Where(user => (user.LastActivity - user.Registration).Days >= day).Count();
-            int b = db.Users.Where(user => (DateTime.Now - user.Registration).Days >= day).Count();
+            var installDay = DateTime.Now.Date;
+
+            int a = db.Users.Where(user => 
+                user.Registration <= installDay && (user.LastActivity - installDay).Days >= day).Count();
+
+            int b = db.Users.Where(user => (installDay >= user.Registration)).Count();
 
             if (b == 0)
             {
-                return -1;
+                return Ok(100);
             }
 
-            double rollingRetention = Math.Round(a / (double)b * 100, 2);
-            return rollingRetention;
+            double rollingRetention = Math.Round(a * 100 / (double)b, 2);
+            return Ok(rollingRetention);
         }
 
         [HttpGet]
