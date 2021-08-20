@@ -32,20 +32,15 @@ namespace ProjectUserActivity.Controllers
                 return BadRequest();
             }
 
-            var dayX = DateTime.Now.Date;
-
-            int a = db.Users.Where(user => 
-                (dayX - user.Registration).Days >= day && user.LastActivity >= dayX).Count();
-
-            int b = db.Users.Where(user => (dayX - user.Registration).Days >= day).Count();
-
+            int a = db.Users.Where(user => (user.LastActivity - user.Registration).Days >= day).Count();
+            int b = db.Users.Count();
 
             if (b == 0)
             {
                 return Ok(100);
             }
 
-            double rollingRetention = Math.Round(a * 100 / (double)b, 2);
+            double rollingRetention = Math.Round(a / (double)b * 100, 2);
             return Ok(rollingRetention);
         }
 
