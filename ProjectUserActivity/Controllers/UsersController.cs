@@ -33,7 +33,7 @@ namespace ProjectUserActivity.Controllers
             }
 
             int a = db.Users.Where(user => (user.LastActivity - user.Registration).Days >= day).Count();
-            int b = db.Users.Count();
+            int b = db.Users.Where(user => (DateTime.Now.Date - user.Registration).Days >= day).Count();
 
             if (b == 0)
             {
